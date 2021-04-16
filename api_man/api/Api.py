@@ -120,7 +120,7 @@ class Apiedit(APIView):
         修改对应的接口
         :return:
         """
-        pk = request.GET.get('id')
+        pk = request.data['id']
         try:
             api_obj = Apimodel.objects.get(pk=pk)
         except ObjectDoesNotExist:

@@ -31,6 +31,7 @@ class ProjectSerializers(serializers.ModelSerializer):
             'version',
             'type',
             'status',
+            'base_url',
             'description',
             'create_time'
         )
@@ -92,7 +93,6 @@ class ApiTestSummarySerializer(serializers.ModelSerializer):
             'test_spend_time',
             'test_case_amount',
             'project',
-            'base_url',
             'create_time'
         )
 

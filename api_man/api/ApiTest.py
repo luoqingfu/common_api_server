@@ -92,9 +92,9 @@ class ApiTestResult(APIView):
         """
         page = int(request.GET.get('page', 1))
         page_size = int(request.GET.get('pageSize', 20))
-        summary_id = request.GET.get('summaryId')
-        try:
-            api_test_result = ApiTestResultModel.objects.filter(summary=summary_id)
+        if request.GET.get('summaryId'):
+            summary_id = request.GET.get('summaryId')
+            api_test_result = ApiTestResultModel.objects.filter(summary=summary_id).order_by('-create_time')
             paginator = Paginator(api_test_result, page_size)
             total_page = paginator.num_pages
             curr_page = paginator.page(page)
@@ -109,11 +109,24 @@ class ApiTestResult(APIView):
                 'totalSize': total_page,
                 'total': total_num
             })
-        except ObjectDoesNotExist:
+        else:
+            api_test_result = ApiTestResultModel.objects.all().order_by('-create_time')
+            paginator = Paginator(api_test_result, page_size)
+            total_page = paginator.num_pages
+            curr_page = paginator.page(page)
+            total_num = paginator.count
+            api_test_results = ApiTestResultSerializer(curr_page, many=True)
             return Response({
-                'code': status.HTTP_400_BAD_REQUEST,
-                'message': '对应的summaryId没有结果'
+                'code': status.HTTP_200_OK,
+                'message': '获取成功',
+                'data': api_test_results.data,
+                'page': page,
+                'pageSize': page_size,
+                'totalSize': total_page,
+                'total': total_num
             })
+
+
 
     def post(self, request):
         """

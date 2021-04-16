@@ -57,7 +57,7 @@ class ProjectView(APIView):
                 'message': 'page和pagesize只能是整数'
             })
         project_status = request.GET.get('status', 1)
-        projects = Projectmodel.objects.filter(status__contains=project_status)
+        projects = Projectmodel.objects.filter(status__contains=project_status).order_by('-create_time')
         paginator = Paginator(projects, page_size)
         total_num = paginator.count
         total = paginator.num_pages
@@ -94,7 +94,7 @@ class Projectdel(APIView):
         :return:
         """
         try:
-            pk = request.GET.get('id')
+            pk = request.data['id']
             project = Projectmodel.objects.filter(pk=pk).first()
         except ObjectDoesNotExist:
             return Response({

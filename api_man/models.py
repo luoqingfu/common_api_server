@@ -22,6 +22,7 @@ class Projectmodel(models.Model):
     project_name = models.CharField(verbose_name='项目名称', max_length=30)
     version = models.CharField(verbose_name='项目版本', max_length=30)
     type = models.CharField(choices=PROJECT_CHOICES, max_length=30)
+    base_url = models.CharField(verbose_name='项目对应的根域名', max_length=255, null=True, blank=True)
     description = models.CharField(verbose_name='项目描述', max_length=50, default='这个人很懒，不想写描述')
     create_time = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
     status = models.CharField(verbose_name='项目状态', max_length=20, choices=STATUS_CHOICES, default=1)  # 1是正常状态，2是删除状态
@@ -119,7 +120,7 @@ class ApiTestSummaryModel(models.Model):
     test_spend_time = models.CharField(verbose_name='测试花费的时间', max_length=255)
     test_case_amount = models.IntegerField(verbose_name='测试用例数量')
     project = models.ForeignKey(Projectmodel, on_delete=models.DO_NOTHING, verbose_name='所属的项目')
-    base_url = models.ForeignKey(BaseUrlModel, on_delete=models.DO_NOTHING, verbose_name='对应的根域名')
+    #base_url = models.ForeignKey(BaseUrlModel, on_delete=models.DO_NOTHING, verbose_name='对应的根域名')
     create_time = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
 
     class Meta:
