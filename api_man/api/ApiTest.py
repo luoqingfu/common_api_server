@@ -27,12 +27,12 @@ class ApiTestSummary(APIView):
         :param request:
         :return:
         """
-        project_id = request.GET.get('projectId')
+        project_name = request.GET.get('projectName')
         page = int(request.GET.get('page', 1))
         page_size = int(request.GET.get('pageSize', 20))
         # 判断是否有projectId
-        if project_id:
-            api_test_summarys = ApiTestSummaryModel.objects.filter(project=project_id)
+        if project_name:
+            api_test_summarys = ApiTestSummaryModel.objects.filter(project__project_name__contains=project_name)
         else:
             api_test_summarys = ApiTestSummaryModel.objects.all()
         paginator = Paginator(api_test_summarys, page_size)
